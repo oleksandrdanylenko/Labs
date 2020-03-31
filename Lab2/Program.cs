@@ -1,6 +1,4 @@
-﻿// A C# program print Eulerian Trail 
-// in a given Eulerian or Semi-Eulerian Graph 
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 class Graph
@@ -75,30 +73,32 @@ class Graph
 			return true;
 		}
 
-		bool[] isVisited = new bool[this.Vertices];
-		int count1 = DfsCount(u, isVisited);
+		var isVisited = new bool[Vertices];
+		var count1 = DfsCount(u, isVisited);
 
 		RemoveEdge(u, v);
 		isVisited = new bool[this.Vertices];
 		int count2 = DfsCount(u, isVisited);
 
 		AddEdge(u, v);
-		return (count1 > count2) ? false : true;
+		return count1 <= count2;
 	}
 
-	private int DfsCount(int v, bool[] isVisited)
+	private int DfsCount(int v, IList<bool> isVisited)
 	{
 		isVisited[v] = true;
-		int count = 1;
+		var count = 1;
 
-		foreach (int i in adj[v])
-		{
-			if (!isVisited[i])
-			{
-				count += DfsCount(i, isVisited);
-			}
-		}
-		return count;
+        for (var index = 0; index < adj[v].Count; index++)
+        {
+            var i = adj[v][index];
+            if (!isVisited[i])
+            {
+                count += DfsCount(i, isVisited);
+            }
+        }
+
+        return count;
 	}
 
 	public static void Main(String[] a)
